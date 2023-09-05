@@ -1,7 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 export default function Headers() {
-  let count = 0;
+  const cartData=useSelector((state)=>state.allCart.count)
+  // console.log(cartData);
+  // let count = c;
   return (
     <div>
       <nav className=" border-gray-200 dark:bg-gray-900 bg-black text-white">
@@ -20,7 +23,7 @@ export default function Headers() {
                 >
                   Cart
                   <span className=" rounded-full w-5 h-5 bottom-3 mb-4 relative">
-                    {count}
+                    {cartData}
                   </span>
                 </Link>
               </li>

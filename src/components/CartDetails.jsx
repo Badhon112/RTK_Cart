@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import Cardsdata from "./CardData";
-
+import { useDispatch, useSelector } from "react-redux";
+import { removeToCart } from "../redux/features/cartSlice";
 export default function TableCart() {
-  const [data, setData] = useState(Cardsdata);
-  const count = 1;
+  const dispatch = useDispatch();
+  let itemCount = 1;
+  const selecteditem = useSelector((state) => state.allCart.carts);
+  let allPrice = useSelector((state) => state.allCart.allPrice);
+  const [data, setData] = useState(selecteditem);
   const Empty = () => {
     setData([]);
+    dispatch(removeToCart());
   };
+  // const Increment = (e) => {
+  //   allPrice += e.target.value;
+  //   itemCount += 1;
+  // };
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
@@ -19,7 +28,7 @@ export default function TableCart() {
         <div className="mt-8">
           <ul className="space-y-4">
             <li className="flex items-center gap-2 justify-between text-2xl bg-black text-white p-4 rounded-lg">
-              <div>Cart Calculation ({count})</div>
+              <div>Cart Calculation</div>
               <span className="bg-red-400 p-2 rounded-lg text-white">
                 <button onClick={Empty}>Empty Cart </button>
               </span>
@@ -73,11 +82,27 @@ export default function TableCart() {
                     <td className="px-6 py-4">{item.dish}</td>
                     <td className="px-6 py-4">{item.price}</td>
                     <td className="space-x-3">
-                      <button className="">-</button>
-                      <span>1</span>
-                      <button className=" ">+</button>
+                      <button
+                        className=""
+                        onClick={() => {
+                          item.qnty -= 1;
+                          console.log("Decremetn");
+                        }}
+                      >
+                        -
+                      </button>
+                      <input type="text" value={item.qnty} disabled className="w-5" />
+                      <button
+                        className=" "
+                        onClick={() => {
+                          item.qnty += 1;
+                          console.log("Increment");
+                        }}
+                      >
+                        +
+                      </button>
                     </td>
-                    <td className="px-6 py-4">{item.price}</td>
+                    <td className="px-6 py-4">{item.price *item.qnty}</td>
                   </tr>
                 );
               })}
@@ -87,7 +112,7 @@ export default function TableCart() {
           <li className="flex items-center gap-4 justify-between text-xl">
             <span className="ml-96 font-bold">Item in Cart : 1</span>
             <span className="font-bold">
-              Total Price : $ <span className="text-red-700">350</span>
+              Total Price : $ <span className="text-red-700">{allPrice}</span>
             </span>
           </li>
         </div>

@@ -1,6 +1,12 @@
 import React from "react";
 import Cardsdata from "./CardData";
+import { addToCart } from "../redux/features/cartSlice";
+import { useDispatch } from "react-redux";
 const Item = () => {
+  const dispatch = useDispatch();
+  const senddata = (e) => {
+    dispatch(addToCart(e))
+  };
   return (
     <main className="grid grid-cols-2 gap-x-6 gap-y-10 px-2 pb-20 sm:grid-cols-3 sm:px-8 lg:mt-16 lg:grid-cols-3 lg:gap-x-4 lg:px-0">
       {Cardsdata.map((item, index) => {
@@ -42,7 +48,12 @@ const Item = () => {
               </div>
             </div>
             <hr className="w-full bg-black p-[1px]" />
-            <button className="items-center ml-4 bg-blue-800 text-white mt-1 rounded-full p-2 w-56"  >Add to Cart</button>
+            <button
+              className="items-center ml-4 bg-blue-800 text-white mt-1 rounded-full p-2 w-56"
+              onClick={() => senddata(item)}
+            >
+              Add to Cart
+            </button>
           </article>
         );
       })}
